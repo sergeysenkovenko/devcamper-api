@@ -1,5 +1,6 @@
 const express = require('express')
 const dotenv = require('dotenv')
+const errorHandler = require('./middlewares/error-handler')
 const morgan = require('morgan')
 const connectDB = require('./db')
 const colors = require('colors')
@@ -20,6 +21,8 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use('/api/v1/bootcamps', bootcamps)
 
+app.use(errorHandler)
+
 const PORT = process.env.PORT || 5000
 
 const server = app.listen(
@@ -27,8 +30,9 @@ const server = app.listen(
   console.log(colors.yellow.bold(`Server running on port: ${PORT}`)),
 )
 
-process.on('unhandledRejection', (error) => {
+process.on('unhandledRejection', (err) => {
   server.close(() => {
-    throw new Error(colors.red(error.message))
+    console.log(colors.red(`Error: ${err.message}`))
+    process.exit(1)
   })
 })
