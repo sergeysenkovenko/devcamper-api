@@ -53,7 +53,7 @@ CourseSchema.statics.getAverageCost = async function (bootcampId) {
 
   try {
     await this.model('Bootcamp').findByIdAndUpdate(bootcampId, {
-      averageCost: computedObj.averageCost,
+      averageCost: Math.ceil(computedObj.averageCost / 10) * 10,
     })
   } catch (err) {
     console.error(err)
