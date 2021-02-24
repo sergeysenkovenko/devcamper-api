@@ -1,6 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const path = require('path')
+const cookieParser = require('cookie-parser')
 const fileUpload = require('express-fileupload')
 const errorHandler = require('./middlewares/error-handler')
 const morgan = require('morgan')
@@ -13,10 +14,13 @@ connectDB()
 
 const bootcamps = require('./routes/bootcamps')
 const courses = require('./routes/courses')
+const auth = require('./routes/auth')
 
 const app = express()
 
 app.use(express.json())
+
+app.use(cookieParser())
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
@@ -28,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/api/v1/bootcamps', bootcamps)
 app.use('/api/v1/courses', courses)
+app.use('/api/v1/auth', auth)
 
 app.use(errorHandler)
 
