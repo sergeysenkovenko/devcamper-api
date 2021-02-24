@@ -10,6 +10,7 @@ const {
 } = require('../controllers/bootcamps')
 
 const advancedResults = require('../middlewares/advanced-results')
+const fileUpload = require('../middlewares/file-upload')
 const Bootcamp = require('../models/Bootcamp')
 const courseRouter = require('./courses')
 
@@ -29,6 +30,6 @@ router.route('/:id').get(getBootcamp).put(updateBootcamp).delete(deleteBootcamp)
 
 router.route('/radius/:city/:distance').get(getBootcampsInRadius)
 
-router.route('/:id/photo').put(uploadBootcampPhoto)
+router.route('/:id/photo').put(fileUpload(Bootcamp), uploadBootcampPhoto)
 
 module.exports = router
